@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 // https://prettier.io/docs/en/options.html
-export default {
+module.exports = {
   trailingComma: 'es5',
   bracketSpacing: true,
   printWidth: 100,

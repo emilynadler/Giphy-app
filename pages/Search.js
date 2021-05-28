@@ -1,47 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Home.module.css';
-import OneGiphy from "./OneGiphy"
 
 const Search = () => {
   const [term, setTerm] = useState('');
-  const [images, setImages] = useState([]);  
+  const [images, setImages] = useState([]);
 
-  const URL = `http://api.giphy.com/v1/gifs/search?q={term}&api_key=sd1CbGfQXvPksRtbZ31ZrFW2Xi1iXdHO`;
-
-  useEffect (() =>{
-      requestImages();
-  }, [])
+  //   useEffect(() => {
+  //     requestImages();
+  //   }, [term]);
 
   async function requestImages() {
-    const res = await fetch(
-        URL
-    );
+    const URL = `http://api.giphy.com/v1/gifs/search?q=${term}&limit=10&api_key=sd1CbGfQXvPksRtbZ31ZrFW2Xi1iXdHO`;
+    const res = await fetch(URL);
     const json = await res.json();
-    console.log(json.data[0]);
-
+    console.log({ json });
     setImages(json.data);
-
   }
 
-  const handleOnSubmit = () => {
-    console.log("hello")
+  const handleOnSubmit = (e) => {
+    requestImages();
+    e.preventDefault();
   };
 
   return (
     <div>
-    <main className={styles.main}>
+      <main className={styles.main}>
         <h1>Search for any gif here:</h1>
-        <form className={styles.description} onSubmit={() => handleOnSubmit}>
-            <input onChange={(e) => setTerm(e.target.value)} type="text" placeholder="Search here" />
-            <input type="submit" value="Submit" />
-      </form>
-      {images.map(image => (
-        <div>
-            <iframe src={image.url} class="giphy-embed" allowFullScreen></iframe><p><a href={image.url}></a></p>
-        </div>
-      ))}
-</main>
-      <p>{term}</p>
+        <form onSubmit={handleOnSubmit} className={styles.description}>
+          <input onChange={(e) => setTerm(e.target.value)} type="text" placeholder="Search here" />
+          <input type="submit" value="Submit" />
+        </form>
+        {images.map((image) => (
+          <div key={image.id}>
+            <iframe src={image.embed_url} className="giphy-embed"></iframe>
+            <a href={image.embed_url}></a>
+          </div>
+        ))}
+      </main>
     </div>
   );
 };
