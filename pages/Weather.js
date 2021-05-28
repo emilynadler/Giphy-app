@@ -32,9 +32,12 @@ const Weather = () => {
           placeholder="Enter your zip code"
         />
         <input type="submit" value="submit" />
-        <p>
-          It is {weather.temp_f}°F in {location.name} right now!
-        </p>
+        {console.log(weather.temp_f)}
+        {weather.temp_f === undefined ? null : (
+          <p>
+            It is {weather.temp_f}°F in {location.name} right now!
+          </p>
+        )}
       </form>
     </div>
   );
