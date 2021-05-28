@@ -4,14 +4,15 @@ import NavBar from './NavBar';
 
 const Weather = () => {
   const [zip, setZip] = useState('');
-  const [weather, setWeather] = useState([]);
+  const [weather, setWeather] = useState({});
+  const [location, setLocation] = useState({});
 
   async function requestWeather() {
-    const URL = `api.openweathermap.org/data/2.5/weather?zip=10538,us&appid={fd37e60fc523e2bcbade464eab3f667d
-    }}`;
+    const URL = `http://api.weatherapi.com/v1/current.json?key=82f71c94d9b74040997182230212805&q=${zip}&aqi=yes`;
     const res = await fetch(URL);
     const json = await res.json();
-    setWeather(json.data);
+    setWeather(json.current);
+    setLocation(json.location);
     console.log(json);
   }
 
@@ -23,7 +24,7 @@ const Weather = () => {
   return (
     <div className={styles.main}>
       <NavBar />
-      <h1>Where do you live?</h1>
+      <h1>Find the temperature in any zipcode:</h1>
       <form onSubmit={handleOnSubmit}>
         <input
           onChange={(e) => setZip(e.target.value)}
@@ -31,13 +32,10 @@ const Weather = () => {
           placeholder="Enter your zip code"
         />
         <input type="submit" value="submit" />
+        <p>
+          It is {weather.temp_f}°F in {location.name} right now!
+        </p>
       </form>
-      {weather.map((weather) => (
-        <div key={weather.id}>
-          <p>Description: {weather.description}</p>
-        </div>
-      ))}
-      <p>{zip}</p>
     </div>
   );
 };
