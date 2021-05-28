@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/Home.module.css';
+import NavBar from './NavBar';
 
 const Search = () => {
   const [term, setTerm] = useState('');
@@ -13,7 +14,6 @@ const Search = () => {
     const URL = `http://api.giphy.com/v1/gifs/search?q=${term}&limit=10&api_key=sd1CbGfQXvPksRtbZ31ZrFW2Xi1iXdHO`;
     const res = await fetch(URL);
     const json = await res.json();
-    console.log({ json });
     setImages(json.data);
   }
 
@@ -25,6 +25,7 @@ const Search = () => {
   return (
     <div>
       <main className={styles.main}>
+        <NavBar />
         <h1>Search for any gif here:</h1>
         <form onSubmit={handleOnSubmit} className={styles.description}>
           <input onChange={(e) => setTerm(e.target.value)} type="text" placeholder="Search here" />
